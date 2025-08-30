@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 BUILTIN_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,7 +42,9 @@ BUILTIN_APPS = [
     'django.contrib.staticfiles',
 ]
 
-LOCAL_APPS = []
+LOCAL_APPS = [
+    'users',
+]
 
 THIRD_PARTY_APPS = []
 
@@ -135,3 +138,5 @@ if 'test' in sys.argv :
     TESTING = True
 else:
     TESTING = False
+
+AUTH_USER_MODEL = 'users.CustomBaseUser'
