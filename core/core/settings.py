@@ -44,6 +44,7 @@ BUILTIN_APPS = [
 
 LOCAL_APPS = [
     'users',
+    'exam',
 ]
 
 THIRD_PARTY_APPS = []

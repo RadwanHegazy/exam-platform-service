@@ -40,11 +40,11 @@ class DoctorAdmin(BaseUserAdminCreate):
 
 @admin.register(Student)
 class StudentAdmin(BaseUserAdminCreate):
-    list_display = ('full_name', 'email', 'level', 'id_number', 'is_staff')
-    fieldsets = BaseUserAdminCreate.fieldsets + (
-        (_('Student Information'), {'fields': ('level', 'id_number')}),
-    )
-    add_fieldsets = BaseUserAdminCreate.add_fieldsets + (
-        (_('Student Information'), {'fields': ('level', 'id_number')}),
-    )
+    # list_display = ('full_name', 'email', 'level', 'id_number', 'is_staff')
+    # fieldsets = BaseUserAdminCreate.fieldsets + (
+    #     (_('Student Information'), {'fields': ('level', 'id_number')}),
+    # )
+    # add_fieldsets = BaseUserAdminCreate.add_fieldsets + (
+    #     (_('Student Information'), {'fields': ('level', 'id_number')}),
+    # )
     list_filter = []
