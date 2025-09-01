@@ -2,7 +2,7 @@ from django.db import models
 from .base import CustomBaseUser
 
 class Student (CustomBaseUser) : 
-    level = models.PositiveIntegerField()
+    level = models.IntegerField()
     id_number = models.BigIntegerField() 
 
     class Meta: 
