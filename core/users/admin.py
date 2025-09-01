@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import Group
-from .models import Doctor, Student
+from .models import Doctor, Student, Level
 
 admin.site.unregister(Group)
 
@@ -48,3 +48,9 @@ class StudentAdmin(BaseUserAdminCreate):
         (_('Student Information'), {'fields': ('level', 'id_number')}),
     )
     list_filter = []
+
+
+@admin.register(Level)
+class LevelAdmin (admin.ModelAdmin) : 
+    list_display = ['name', 'created_at', 'id']
+    search_fields = ['name']
