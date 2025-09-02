@@ -5,8 +5,10 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY reqirements.txt .
-RUN pip install --no-cache-dir -r reqirements.txt
+COPY ../requirements.txt .
+COPY ../cassandra_orm .
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 

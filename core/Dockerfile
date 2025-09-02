@@ -5,9 +5,10 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY requirments.txt .
-RUN pip install --no-cache-dir -r requirments.txt
+COPY ../requirements.txt .
 
-COPY . .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY ./core .
 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
