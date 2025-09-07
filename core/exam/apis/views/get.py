@@ -18,7 +18,7 @@ class ListExamAPI (ListAPIView) :
 
     def get_queryset(self):
         return Exam.objects.filter(
-            level = self.request.user.level
+            level = self.request.user.student.level
         )
 
 class RetrieveExamAPI (RetrieveAPIView) : 
@@ -28,6 +28,6 @@ class RetrieveExamAPI (RetrieveAPIView) :
 
     def get_queryset(self):
         return Exam.objects.filter(
-            level = self.request.user.level
+            level = self.request.user.student.level
         )
 

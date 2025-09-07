@@ -3,4 +3,4 @@ from .models import Student
 
 class IsStudent (IsAuthenticated) : 
     def has_permission(self, request, view):
-        return super().has_permission(request, view) and isinstance(request.user, Student)
+        return super().has_permission(request, view) and hasattr(request.user, 'student')

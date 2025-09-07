@@ -44,6 +44,7 @@ BUILTIN_APPS = [
 ]
 
 LOCAL_APPS = [
+    'globals',
     'users',
     'exam',
 ]
@@ -149,7 +150,7 @@ AUTH_USER_MODEL = 'users.CustomBaseUser'
 
 REST_FRAMEWORK = {
 
-    "DEFAULT_AUTENTICATION_CLASSES": [
+    "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
 
