@@ -1,4 +1,3 @@
-from exam.apis.serializers.get import RetrieveExamSerializer, QuestionSerializer
 from django.db import models
 from users.models import Doctor, Level
 from django.core.cache import cache
@@ -74,6 +73,7 @@ class Question (models.Model) :
 
 @receiver(post_save, sender=Exam)
 def update_exam_cache(sender, instance, **kwargs):
+    from exam.apis.serializers.get import RetrieveExamSerializer
     cache_key = f'exam_{instance.id}'
     value = RetrieveExamSerializer(instance)
     cache.set(cache_key, value.data, None)
@@ -81,6 +81,7 @@ def update_exam_cache(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Question)
 def set_exam_qs(sender, instance, **kwargs):
+    from exam.apis.serializers.get import QuestionSerializer
     exam = instance.exam
     cache_key = f'exam_{exam.id}_qs'
     cached_exam = cache.get(cache_key)
