@@ -1,4 +1,4 @@
-from conf import app, Request, JSONResponse
+from .conf import app, Request, JSONResponse
 import requests
 
 @app.middleware("http")

@@ -1,4 +1,4 @@
-from conf import app, redis_client
+from ..conf import app, redis_client
 
 @app.get('/exam/{exam_id}/qs')
 async def exam_qs (exam_id) : 
