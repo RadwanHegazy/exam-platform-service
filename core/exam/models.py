@@ -1,8 +1,5 @@
 from django.db import models
 from users.models import Doctor, Level
-from django.core.cache import cache
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 class Exam (models.Model) : 
     name = models.CharField(max_length=225)
@@ -70,26 +67,3 @@ class Question (models.Model) :
     def __str__(self):
         return self.name
     
-
-@receiver(post_save, sender=Exam)
-def update_exam_cache(sender, instance, **kwargs):
-    from exam.apis.serializers.get import RetrieveExamSerializer
-    cache_key = f'exam_{instance.id}'
-    value = RetrieveExamSerializer(instance)
-    cache.set(cache_key, value.data, None)
-
-
-@receiver(post_save, sender=Question)
-def set_exam_qs(sender, instance, **kwargs):
-    from exam.apis.serializers.get import QuestionSerializer
-    exam = instance.exam
-    cache_key = f'exam_{exam.id}_qs'
-    cached_exam = cache.get(cache_key)
-    current_qs = QuestionSerializer(instance).data
-    if cached_exam:
-        cache.set(cache_key, [
-            current_qs
-        ], None) 
-    else:
-        cached_exam.append(current_qs)
-        cache.set(cache_key, cached_exam, None)

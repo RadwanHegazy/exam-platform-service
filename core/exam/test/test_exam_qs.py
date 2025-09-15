@@ -1,11 +1,11 @@
 from rest_framework.test import APITestCase
-from globals.test_factory import create_student, create_headers, create_exam
+from globals.test_factory import create_student, create_headers, create_exam, create_question
 from django.urls import reverse
 
-class RetrieveExamsTestCases(APITestCase) :
+class RetrieveExamsQsTestCases(APITestCase) :
 
     def endpoint(self, id):
-        return reverse('retrieve-exam', args=[id])
+        return reverse('exam-qs', args=[id])
 
     def test_no_headers(self) : 
         req = self.client.get(self.endpoint(999))
@@ -24,11 +24,15 @@ class RetrieveExamsTestCases(APITestCase) :
         self.assertEqual(req.status_code, 404)
 
     
-    def test_exists(self) :
+    def test_exists_qs(self) :
         st = create_student()
         ex = create_exam(level=st.level)
+        create_question(exam=ex) 
+        create_question(exam=ex) 
+        create_question(exam=ex) 
         req = self.client.get(
             self.endpoint(ex.id),
             headers=create_headers(st)
         )
         self.assertEqual(req.status_code, 200)
+        self.assertEqual(len(req.json()), 3)

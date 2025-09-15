@@ -33,10 +33,11 @@ class QuestionSerializer (serializers.ModelSerializer) :
     images = QuestionImagesSerializer(many=True, read_only=True)
     
     class Meta:
-        model = Exam
+        model = Question
         exclude = [
             'created_by',
             'created_at',
             'updated_at',
             'correct',
+            'exam',
         ]
