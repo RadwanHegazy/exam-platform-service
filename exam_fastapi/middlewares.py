@@ -13,7 +13,6 @@ async def IsAuthenticated(request: Request, call_next) :
         }, status_code=401)
     
     token  = token_headers.split(' ')[-1]
-    print(f"{token=}")
     req = requests.post(
         'http://web:8000/users/auth/tokens/verify/v1/',
         data={
