@@ -1,3 +1,4 @@
+from exam.models import StudentDegrees
 from rest_framework.test import APITestCase
 from globals.test_factory import create_student, create_headers, create_exam, create_question
 import requests
@@ -26,8 +27,22 @@ class TestSolveExamFastAPI(APITestCase) :
 
         body = {
             "question_id" : question.id,
-            "answer" : "A"
+            "answer" : "A",
+            'exam_id' : exam.id
         }
 
         req = self.client.post(self.endpoint, headers=headers, data=body)
         self.assertEqual(req.status_code, 201)
+
+        # create celery task
+
+        exam.start_solve = True
+        exam.save()
+
+        self.assertNotEqual(
+            StudentDegrees.objects.filter(
+                student = student,
+                exam = exam
+            ).count(), 
+            0
+        )

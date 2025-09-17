@@ -1,3 +1,5 @@
+from core.settings import TESTING
+from .tasks import solve_student_qs
 from exam.apis.serializers.get import QuestionSerializer
 from .models import Exam, Question
 from django.db.models.signals import post_save
@@ -14,6 +16,13 @@ def update_exam_cache(sender, instance : Exam, **kwargs):
         Exam.objects.filter(level=instance.level),
         None
     )
+
+    if instance.start_solve:
+        if TESTING:
+            solve_student_qs(instance.id)
+        else:
+            solve_student_qs.delay(instance.id)
+
 
 @receiver(post_save, sender=Question)
 def set_exam_qs(sender, instance, **kwargs):

@@ -50,7 +50,6 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - web
-      - fastapi_exam
     networks:
       - main
   
@@ -67,8 +66,34 @@ services:
       - ./cassandra_orm:/app/cassandra_orm
     env_file:
       - .env
-    depends_on:
-      - cassandra-seed
+      
+  fastapi_exam-2:
+    container_name: "FastAPI-2"
+    build: 
+      context: .
+      dockerfile: ./exam_fastapi/Dockerfile
+    command: fastapi dev app.py --host=0.0.0.0 --port=1235
+    networks:
+      - main
+    volumes:
+      - ./exam_fastapi:/app
+      - ./cassandra_orm:/app/cassandra_orm
+    env_file:
+      - .env
+      
+  fastapi_exam-3:
+    container_name: "FastAPI-3"
+    build: 
+      context: .
+      dockerfile: ./exam_fastapi/Dockerfile
+    command: fastapi dev app.py --host=0.0.0.0 --port=1236
+    networks:
+      - main
+    volumes:
+      - ./exam_fastapi:/app
+      - ./cassandra_orm:/app/cassandra_orm
+    env_file:
+      - .env
       
   cassandra-seed:
     image: cassandra:4.1
@@ -141,7 +166,24 @@ services:
       start_period: 120s
     networks:
       - main
-  
+
+  celery:
+    container_name: "Celery"
+    build:
+      context: .
+      dockerfile: ./core/Dockerfile
+    command: celery -A core worker --loglevel=info
+    volumes:
+      - ./core:/app
+      - ./cassandra_orm:/app/cassandra_orm
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    networks:
+      - main
+
 volumes:
   custom_postgres_data:
   redis_data:

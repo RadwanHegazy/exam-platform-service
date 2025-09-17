@@ -112,3 +112,20 @@ class BaseModel:
         except Exception as e:
             print(f"Error creating record: {e}")
             raise
+
+    @classmethod
+    def get_by_key(cls, key: str, value: Any) -> List[Dict[str, Any]]:
+        """
+        Get rows by custom key-value pair.
+        NOTE: The key must be indexed (part of primary key or have a secondary index).
+        """
+        if not CassandraORM._session:
+            raise Exception("Not connected to Cassandra. Call CassandraORM.connect() first.")
+        query = f"SELECT * FROM {cls.get_table_name()} WHERE {key} = ?"
+        try:
+            prepared = CassandraORM._session.prepare(query)
+            rows = CassandraORM._session.execute(prepared, [value])
+            return list(rows)
+        except Exception as e:
+            print(f"Error fetching rows by {key}: {e}")
+            raise

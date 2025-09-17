@@ -7,6 +7,7 @@ class StudentAnswer (BaseModel) :
     question_id : int
     student_jwt : str
     answer : str
+    exam_id : int
 
     def save_to_cassandra(self) : 
         "Transform the object into the correct cassandra dataset"
@@ -14,7 +15,8 @@ class StudentAnswer (BaseModel) :
             'question_id' : self.question_id,
             'student_jwt' : self.student_jwt,
             'answer' : self.answer,
-            'created_at' : datetime.now()
+            'created_at' : datetime.now(),
+            'exam_id' : self.exam_id
         }
 
         CassandraORM.connect(
@@ -25,5 +27,6 @@ class StudentAnswer (BaseModel) :
         CasssandraStudentTable.create_table()
 
         st_answer = CasssandraStudentTable()
-        created = st_answer.create(**data)
-        print(f'created uuid : {created}')
+        st_answer.create(**data)
+
+        return True

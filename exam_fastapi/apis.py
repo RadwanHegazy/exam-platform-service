@@ -6,7 +6,8 @@ from .models import StudentAnswer
 def save_student_answer(
     request : Request,
     question_id: int = Form(...),
-    answer: str = Form(...)
+    answer: str = Form(...),
+    exam_id: int = Form(...),
 ) : 
     
     try : 
@@ -15,7 +16,8 @@ def save_student_answer(
         model =  StudentAnswer(
             question_id=question_id,
             answer=answer,
-            student_jwt=headers.split(' ')[-1]
+            student_jwt=headers.split(' ')[-1],
+            exam_id=exam_id
         )
 
         model.save_to_cassandra()

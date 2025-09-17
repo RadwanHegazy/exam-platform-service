@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import Doctor, Level
+from users.models import Doctor, Level, Student
 
 class Exam (models.Model) : 
     name = models.CharField(max_length=225)
@@ -17,6 +17,29 @@ class Exam (models.Model) :
         on_delete=models.CASCADE
     )
     time_in_hours = models.FloatField()
+    
+    class StatusChoices (models.TextChoices) :
+        PENDING = "PENDING", "PENDING"
+        ACTIVE = "ACTIVE", "ACTIVE"
+    
+    status = models.CharField(
+        choices=StatusChoices.choices,
+        max_length=10,
+        default=StatusChoices.PENDING
+    )
+
+    start_solve = models.BooleanField(default=False, null=True, blank=True)
+    
+    class SolveStatusChoices(models.TextChoices) :
+        NOT_STARTED = "NOT_STARTED", "NOT_STARTED"
+        IN_PROGRESS = "IN_PROGRESS", "IN_PROGRESS"
+        COMPLETED = "COMPLETED", "COMPLETED"
+    
+    solve_status = models.CharField(
+        choices=SolveStatusChoices.choices,
+        max_length=15,
+        default=SolveStatusChoices.NOT_STARTED
+    )
 
     def __str__(self):
         return self.name
@@ -67,3 +90,26 @@ class Question (models.Model) :
     def __str__(self):
         return self.name
     
+
+
+class StudentDegrees(models.Model) : 
+    student = models.ForeignKey(
+        Student,
+        related_name='student_degrees',
+        on_delete=models.CASCADE   
+    )
+
+    exam = models.ForeignKey(
+        Exam,
+        related_name='st_degree_exams',
+        on_delete=models.CASCADE
+    )
+
+    final_score = models.FloatField(default=0.0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.student.full_name + " - " + self.exam.name
+    
+    class Meta:
+        ordering = ['-created_at']

@@ -5,5 +5,6 @@ class StudentAnswer (BaseModel) :
     question_id = "INT"
     answer = "TEXT"
     created_at = "TIMESTAMP"
+    exam_id = "INT"
 
 
