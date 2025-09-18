@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Exam Platform Service is a scalable, containerized web application designed to manage online exams for students and educators. It supports exam creation, student authentication, answer submission, automated grading, and result export, leveraging Django, FastAPI, Celery, Cassandra, PostgreSQL, and Redis.
+The Exam Platform Service is a scalable, containerized web application designed to manage online exams for students and educators. It supports exam creation, student authentication, answer submission, automated grading, and result export, leveraging Django, FastAPI, Celery, Cassandra, PostgreSQL, Redis, and a load balancer for fault tolerance.
 
 ## Features
 
@@ -27,6 +27,10 @@ The Exam Platform Service is a scalable, containerized web application designed 
 
 - **Caching:**  
   - Exam and question data cached for fast retrieval.
+
+- **Load Balancing & Fault Tolerance:**  
+  - Requests are distributed across multiple service instances using a load balancer.
+  - Ensures high availability and fault tolerance.
 
 - **Testing:**  
   - Comprehensive unit tests for authentication, exam retrieval, listing, and grading.
@@ -56,6 +60,8 @@ The Exam Platform Service is a scalable, containerized web application designed 
 
 - **Nginx:**  
   - Reverse proxy for Django and FastAPI services.
+
+  - Distributes incoming traffic to fastapi service for fault tolerance and scalability.
 
 - **Docker Compose:**  
   - Orchestrates all services for local development and deployment.
@@ -100,7 +106,7 @@ The Exam Platform Service is a scalable, containerized web application designed 
 2. **Configure environment variables in `.env`.**
 3. **Run `docker-compose up --build` to start all services.**
 4. **Access Django admin at `localhost/admin/`.**
-5. **FastAPI endpoints available at `solver.localhost/`.**
+5. **FastAPI endpoints available at `localhost/solver`.**
 
 ## Technologies Used
 
