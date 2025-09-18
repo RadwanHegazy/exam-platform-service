@@ -2,7 +2,7 @@ from .conf import app, JSONResponse, Request, Form
 from .models import StudentAnswer
 
 
-@app.post('/')
+@app.post('/solver')
 def save_student_answer(
     request : Request,
     question_id: int = Form(...),
@@ -28,5 +28,5 @@ def save_student_answer(
     except Exception as e :
         print('exception : ', e)
         return JSONResponse({
-            'message' : "An error occurred, Please try again"
+            'message' : "An error occurred, Please try again, error : " + str(e)
         }, status_code=400)
