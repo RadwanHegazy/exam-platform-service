@@ -1,3 +1,4 @@
+import json
 import requests
 import threading
 import time
@@ -16,25 +17,26 @@ def get_headers(
     )
     tokens = req.json()['access']
     return {
-        'Authorization': f"Bearer {tokens}"
+        "Content-Type" : "application/json",
+        'Authorization': f"Bearer {tokens}",
     }
 
 def make_solver_request(request_id):
     """Make a single solver request"""
     try:
         req = requests.post(
-            'http://localhost/solver',
-            data={
-                'exam_id': 1,
-                'question_id': 1,
-                'answer': 2
+            'http://localhost:80/solver',
+            json={
+                'exam_id': int(1),
+                'question_id': int(1),
+                'answer': "a"
             },
             headers=get_headers(),
-            timeout=30  # Add timeout to prevent hanging
+            timeout=30  # Add timeout to prevent hanging,
         )
         
         # Check if status code is 201 for success
-        success = req.status_code == 201
+        success = req.ok
 
         print(req.json())
         

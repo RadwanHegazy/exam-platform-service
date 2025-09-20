@@ -51,6 +51,9 @@ class CassandraORM:
 class BaseModel:
     """Base model class that all data models will inherit from"""
     
+    class Meta:
+        ...
+
     @classmethod
     def get_table_name(cls) -> str:
         """Get the table name for the model (defaults to class name lowercase)"""
@@ -65,7 +68,7 @@ class BaseModel:
         # Get field definitions from class attributes
         fields = []
         for attr_name, attr_value in cls.__dict__.items():
-            if not attr_name.startswith('_') and attr_name not in ['id', 'get_table_name', 'create_table', 'create', 'get_all']:
+            if not attr_name.startswith('_') and attr_name not in ['id', 'get_table_name', 'create_table', 'create', 'get_all', "Meta"]:
                 fields.append(f"{attr_name} {attr_value}")
         
         # Create table query
@@ -76,13 +79,24 @@ class BaseModel:
         )
         """
         
+        assert hasattr(cls.Meta, 'index'), "Please set Meta.index"
+        
+        index_name = cls.Meta.index
+        create_index_query = f"""
+            CREATE INDEX IF NOT EXISTS {index_name} ON {cls.get_table_name()} ({index_name});
+        """
+            
+        
         try:
             CassandraORM._session.execute(create_table_query)
+            CassandraORM._session.execute(create_index_query)
             print(f"Table '{cls.get_table_name()}' created successfully!")
         except Exception as e:
             print(f"Error creating table: {e}")
             raise
+            
     
+
     @classmethod
     def create(cls, **kwargs) -> uuid.UUID:
         """Create a new record in the database"""

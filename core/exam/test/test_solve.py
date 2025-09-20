@@ -7,7 +7,7 @@ class TestSolveExamFastAPI(APITestCase) :
 
     def setUp(self):
         self.client = requests
-        self.endpoint = "http://fastapi_exam:1234"
+        self.endpoint = "http://fastapi_exam:1234/solver"
 
     def test_no_headers(self) : 
         req = self.client.post(self.endpoint)

@@ -7,4 +7,7 @@ class StudentAnswer (BaseModel) :
     created_at = "TIMESTAMP"
     exam_id = "INT"
 
+    class Meta:
+        index = 'exam_id'
+
 
