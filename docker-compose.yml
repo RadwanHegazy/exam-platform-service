@@ -8,7 +8,7 @@ services:
     build: 
       context: .
       dockerfile: ./core/Dockerfile
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn -w 4 -b 0.0.0.0:8000 core.wsgi:application
     volumes:
       - ./core:/app
       - ./cassandra_orm:/app/cassandra_orm
