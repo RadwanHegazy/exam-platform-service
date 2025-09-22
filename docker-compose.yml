@@ -116,48 +116,6 @@ services:
     depends_on:
       - cassandra-node1
 
-  # fastapi_exam:
-  #   container_name: "FastAPI"
-  #   build: 
-  #     context: .
-  #     dockerfile: ./exam_fastapi/Dockerfile
-  #   command: fastapi dev app.py --host=0.0.0.0 --port=1234
-  #   networks:
-  #     - local
-  #   volumes:
-  #     - ./exam_fastapi:/app
-  #     - ./cassandra_orm:/app/cassandra_orm
-  #   env_file:
-  #     - .env
-      
-  # fastapi_exam-2:
-  #   container_name: "FastAPI-2"
-  #   build: 
-  #     context: .
-  #     dockerfile: ./exam_fastapi/Dockerfile
-  #   command: fastapi dev app.py --host=0.0.0.0 --port=1235
-  #   networks:
-  #     - local
-  #   volumes:
-  #     - ./exam_fastapi:/app
-  #     - ./cassandra_orm:/app/cassandra_orm
-  #   env_file:
-  #     - .env
-      
-  # fastapi_exam-3:
-  #   container_name: "FastAPI-3"
-  #   build: 
-  #     context: .
-  #     dockerfile: ./exam_fastapi/Dockerfile
-  #   command: fastapi dev app.py --host=0.0.0.0 --port=1236
-  #   networks:
-  #     - local
-  #   volumes:
-  #     - ./exam_fastapi:/app
-  #     - ./cassandra_orm:/app/cassandra_orm
-  #   env_file:
-  #     - .env
-      
   cassandra-seed:
     image: cassandra:4.1
     container_name: cassandra-seed
