@@ -109,7 +109,7 @@ app.post('/solver', StudentAnswer, validate, async (req, res) => {
             'created_at': new Date().toISOString()
         };
 
-        console.log("cassandra data : ", cassandraData)
+
         // Create table if not exists
         const createTableQuery = `
             CREATE TABLE IF NOT EXISTS student_answers (
