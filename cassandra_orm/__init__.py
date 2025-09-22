@@ -27,7 +27,6 @@ class CassandraORM:
             cls._create_keyspace(keyspace)
             cls._session.set_keyspace(keyspace)
             cls._session.row_factory = dict_factory
-            print("Connected to Cassandra cluster successfully!")
         except Exception as e:
             print(f"Error connecting to Cassandra: {e}")
             raise
@@ -46,7 +45,6 @@ class CassandraORM:
         """Close the connection to Cassandra"""
         if cls._cluster:
             cls._cluster.shutdown()
-        print("Connection to Cassandra closed.")
 
 class BaseModel:
     """Base model class that all data models will inherit from"""
@@ -59,6 +57,14 @@ class BaseModel:
         """Get the table name for the model (defaults to class name lowercase)"""
         return cls.__name__.lower()
     
+    def cleanup(self) :
+        """Delete all created answers"""
+        query = f"""
+            TRUNCATE TABLE {self.get_table_name()};
+        """
+        CassandraORM._session.execute(query)
+        return True
+
     @classmethod
     def create_table(cls):
         """Create table for the model if it doesn't exist"""
@@ -90,7 +96,6 @@ class BaseModel:
         try:
             CassandraORM._session.execute(create_table_query)
             CassandraORM._session.execute(create_index_query)
-            print(f"Table '{cls.get_table_name()}' created successfully!")
         except Exception as e:
             print(f"Error creating table: {e}")
             raise
@@ -121,7 +126,6 @@ class BaseModel:
         try:
             prepared = CassandraORM._session.prepare(insert_query)
             CassandraORM._session.execute(prepared, values)
-            print(f"Record created in '{cls.get_table_name()}' with ID: {kwargs['id']}")
             return kwargs['id']
         except Exception as e:
             print(f"Error creating record: {e}")

@@ -28,8 +28,9 @@ def solve_student_qs(
     exam_instance.solve_status = Exam.SolveStatusChoices.IN_PROGRESS
     exam_instance.start_solve = False
     exam_instance.save()
-
-    st_answers = StudentAnswer().get_by_key('exam_id', exam_id)
+    
+    st_answer_obj = StudentAnswer()
+    st_answers = st_answer_obj.get_by_key('exam_id', exam_id)
     for st_answer in st_answers : 
         # corect the answers here
         student = from_jwt_to_student(st_answer['student_jwt'])
@@ -46,3 +47,5 @@ def solve_student_qs(
 
     exam_instance.solve_status = Exam.SolveStatusChoices.COMPLETED
     exam_instance.save()
+
+    st_answer_obj.cleanup()

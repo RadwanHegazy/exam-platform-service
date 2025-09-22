@@ -2,7 +2,13 @@
 
 ## Overview
 
-The Exam Platform Service is a scalable, containerized web application designed to manage online exams for students and educators. It supports exam creation, student authentication, answer submission, automated grading, and result export, leveraging Django, FastAPI, Celery, Cassandra, PostgreSQL, Redis, and a load balancer for fault tolerance.
+The Exam Platform Service is a scalable, containerized web application designed to manage online exams for students and educators. It supports exam creation, student authentication, answer submission, automated grading, and result export, leveraging Django, Express.js, Celery, Cassandra, PostgreSQL, Redis, and a load balancer for fault tolerance.
+
+## Visual Resources
+
+- [Database Schema](https://drawsql.app/teams/test-1748/diagrams/exam-platform)
+
+- [System Design](https://miro.com/app/board/uXjVJQyAWU4=/?share_link_id=638336235797)
 
 ## Features
 
@@ -41,8 +47,8 @@ The Exam Platform Service is a scalable, containerized web application designed 
   - Handles user management, exam/question CRUD, and admin interface.
   - REST API endpoints for authentication and exam access.
 
-- **FastAPI:**  
-  - Handles student answer submissions.
+- **Express.js:**  
+  - Save student answer submissions via Cassandra DB.
   - Middleware for JWT authentication.
   - Communicates with Django for token verification.
 
@@ -63,8 +69,8 @@ The Exam Platform Service is a scalable, containerized web application designed 
 
   - Distributes incoming traffic to fastapi service for fault tolerance and scalability.
 
-- **Docker Compose:**  
-  - Orchestrates all services for local development and deployment.
+- **Docker:**  
+  - Dockerize all services on the project.
 
 ## Directory Structure
 
@@ -72,8 +78,8 @@ The Exam Platform Service is a scalable, containerized web application designed 
   - Django project with apps: `users`, `exam`, `globals`.
   - Celery configuration and management scripts.
 
-- `exam_fastapi/`  
-  - FastAPI app for answer submission and authentication middleware.
+- `exam_expressjs/`  
+  - express app for answer submission and authentication middleware.
 
 - `cassandra_orm/`  
   - Custom ORM for Cassandra models and operations.
@@ -108,10 +114,23 @@ The Exam Platform Service is a scalable, containerized web application designed 
 4. **Access Django admin at `localhost/admin/`.**
 5. **FastAPI endpoints available at `localhost/solver`.**
 
+
+## Testing
+
+**For Testing The System**
+```
+docker container exec -it <DJANGO_CONTAINER_ID> python manage.py test
+```
+
+**For Testing Traffic**
+```
+python test_traffic
+```
+
 ## Technologies Used
 
 - Django 5.2.5
-- FastAPI
+- Express.js
 - Celery
 - Cassandra
 - PostgreSQL
@@ -122,7 +141,3 @@ The Exam Platform Service is a scalable, containerized web application designed 
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
-
----
-
-For API documentation and usage examples, see the code in [core/users/apis/urls.py](core/users/apis/urls.py), [core/exam/apis/urls.py](core/exam/apis/urls.py), and [exam_fastapi/apis.py](exam_fastapi/apis.py).

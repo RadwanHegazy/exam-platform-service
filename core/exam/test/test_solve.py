@@ -1,3 +1,4 @@
+import json
 from exam.models import StudentDegrees
 from rest_framework.test import APITestCase
 from globals.test_factory import create_student, create_headers, create_exam, create_question
@@ -16,13 +17,15 @@ class TestSolveExamFastAPI(APITestCase) :
 
     def test_post_no_body(self) : 
         headers = create_headers()
+        headers['Content-Type'] = 'application/json'
         req = self.client.post(self.endpoint, headers=headers)
-        self.assertEqual(req.status_code, 422)
+        self.assertEqual(req.status_code, 400)
 
     def test_post_body(self) :
         student = create_student()
         exam = create_exam()
         headers = create_headers(student)
+        headers['Content-Type'] = 'application/json'
         question = create_question(exam=exam)
 
         body = {
@@ -31,8 +34,8 @@ class TestSolveExamFastAPI(APITestCase) :
             'exam_id' : exam.id
         }
 
-        req = self.client.post(self.endpoint, headers=headers, data=body)
-        self.assertEqual(req.status_code, 201)
+        req = self.client.post(self.endpoint, headers=headers, data=json.dumps(body))
+        self.assertEqual(req.status_code, 200)
 
         # create celery task
 

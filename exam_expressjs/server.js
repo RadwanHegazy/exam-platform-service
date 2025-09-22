@@ -9,7 +9,7 @@ const port = process.env.PORT;
 const client = new cassandra.Client({
     contactPoints: [
         process.env.CASSANDRA_HOST_1,
-        process.env.CASSANDRA_HOST_2
+        process.env.CASSANDRA_HOST_2,
     ],
     localDataCenter: 'datacenter1',
     keyspace: process.env.CASSANDRA_KEYSPACE
@@ -112,7 +112,7 @@ app.post('/solver', StudentAnswer, validate, async (req, res) => {
 
         // Create table if not exists
         const createTableQuery = `
-            CREATE TABLE IF NOT EXISTS student_answers (
+            CREATE TABLE IF NOT EXISTS studentanswer (
                 exam_id int,
                 question_id int,
                 student_jwt text,
@@ -126,13 +126,13 @@ app.post('/solver', StudentAnswer, validate, async (req, res) => {
 
         // Create index on exam_id if not exists
         const createIndexQuery = `
-            CREATE INDEX IF NOT EXISTS ON student_answers (exam_id)
+            CREATE INDEX IF NOT EXISTS ON studentanswer (exam_id)
         `;
 
         await client.execute(createIndexQuery);
 
         // Insert the data
-        const insertQuery = 'INSERT INTO student_answers (exam_id, question_id, answer, student_jwt, created_at) VALUES (?, ?, ?, ?, ?)';
+        const insertQuery = 'INSERT INTO studentanswer (exam_id, question_id, answer, student_jwt, created_at) VALUES (?, ?, ?, ?, ?)';
         const params = [exam_id, question_id, answer, student_jwt, cassandraData.created_at];
 
         await client.execute(insertQuery, params, { prepare: true });

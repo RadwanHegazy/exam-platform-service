@@ -158,8 +158,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=3),
-    'REFRESH_TOKEN_LIFETIME': timedelta(hours=6),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=6),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=12),
 }
 
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
